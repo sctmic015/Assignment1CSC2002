@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Terrain {
     float[][] mountainArray;
     int rows;
@@ -7,6 +12,32 @@ public class Terrain {
         this.mountainArray = mountainArray;
         this.rows = mountainArray.length;
         this.columns = mountainArray[0].length;
+    }
+
+    // Maybe try get this to work tomorrow or leave out
+    public Terrain(File file) throws FileNotFoundException {
+        Scanner scan = new Scanner(file);
+        String info = scan.nextLine();
+        //System.out.println(info);
+        String[] infoSplit = info.split(" ");
+        int dim1 = Integer.parseInt(infoSplit[0]);
+        int dim2 = Integer.parseInt(infoSplit[1]);
+        float[][] array = new float[dim1][dim2];
+        //this.mountainArray = new float[dim1][dim2];
+        while (scan.hasNextLine()){
+            String[] line = scan.nextLine().trim().split(" ");
+            int i = 0;
+            int count = 0;
+            while (i < dim1) {
+                for (int j = 0; j < dim2 ; j ++){
+                    array[i][j] = Float.parseFloat(line[count]);
+                    count ++;
+                }
+                i ++;
+            }
+        }
+        System.out.println(Arrays.toString(array));
+        this.mountainArray = array;
     }
 
    public boolean isBasin(int rowNum, int columnNum){

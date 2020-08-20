@@ -5,12 +5,13 @@ public class SequentialVersion {
     public static void main (String[] args) throws Exception {
         Scanner systemScan = new Scanner(System.in);
         File file;
-        file = new File("/home/michael/Documents/small_in.txt");
+        file = new File("/home/michael/Documents/large_in.txt");
         Scanner fileScan = new Scanner(file);
         float[][] testArray = readArray(file);
         Terrain Test = new Terrain(testArray);
         //boolean wudUp = Test.isBasin(154, 212);
         //System.out.println(wudUp);
+        double time1 = System.currentTimeMillis();
         for (int i = 0; i < Test.getRows(); i ++) {
             for (int j = 0; j < Test.getColumns(); j ++){
                 if (Test.isBasin(i, j) == true) {
@@ -19,7 +20,8 @@ public class SequentialVersion {
                 }
             }
         }
-
+        double time2 =System.currentTimeMillis() - time1;
+        System.out.println(time2);
     }
     public static float[][] readArray(File file) throws FileNotFoundException {
         Scanner scan = new Scanner(file);
