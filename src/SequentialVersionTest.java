@@ -5,25 +5,27 @@ import java.io.*;
 
 public class SequentialVersionTest {
     public static void main (String[] args) throws Exception {
-        File file = new File(args[0] + ".txt");
+        //File file = new File(args[0] + ".txt");
+        Scanner systemScan = new Scanner(System.in);
+        String scanIn = systemScan.next();
+        String fileName = "/home/michael/Documents/" + scanIn;
+        File file = new File(fileName);
         Scanner fileScan = new Scanner(file);
         float[][] testArray = readArray(file);
         Terrain Test = new Terrain(testArray);
-        //boolean wudUp = Test.isBasin(154, 212);
-        //System.out.println(wudUp);
+        boolean[][] classification = new boolean[Test.getRows()][Test.getColumns()];
         for (int b = 0; b < 20; b++) {
             double time1 = System.currentTimeMillis();
             for (int i = 0; i < Test.getRows(); i++) {
                 for (int j = 0; j < Test.getColumns(); j++) {
-                    if (Test.isBasin(i, j) == true) {
-                        System.out.print(i + "  " + j);
-                        System.out.println();
-                    }
+                    classification[i][j] = Test.isBasin(i, j);
                 }
             }
             double time2 = System.currentTimeMillis() - time1;
-            System.out.println(time2);
+            writeOperationsToCSV("trial1" , time2, scanIn + "Run");
+
         }
+        writeOutputToTxt(classification, Test, "large_out_2.txt");
     }
     public static float[][] readArray(File file) throws FileNotFoundException {
         Scanner scan = new Scanner(file);
@@ -47,7 +49,7 @@ public class SequentialVersionTest {
         }
         return array;
     }
-        public static void writeOperationsToCSV(String information, int opCount, String filename) throws IOException{
+    public static void writeOperationsToCSV(String information, double opCount, String filename) throws IOException{
             FileWriter fw = null;
             BufferedWriter bw = null;
             PrintWriter pw = null;
@@ -62,7 +64,7 @@ public class SequentialVersionTest {
                 //  + information + '\n' + "Operations counted: "
                 //+ Integer.toString(opCount) + '\n');
 
-                pw.println(information + " , " + Integer.toString(opCount));
+                pw.println(information + " , " + Double.toString(opCount));
                 pw.flush();
 
             } finally {
@@ -75,8 +77,44 @@ public class SequentialVersionTest {
 
             }
         }
+    public static int countTrue(boolean[][] classification) {
+        int count = 0;
+        for (int i = 0; i < classification.length; i ++) {
+            for (int j = 0; j < classification[i].length; j ++){
+                if (classification[i][j]){
+                    count ++;
+                }
+            }
+        }
+        return count;
+    }
+    public static void writeOutputToTxt(boolean[][] classification, Terrain Test, String filename) throws IOException{
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        PrintWriter pw = null;
 
-        public static int lineCounter(String inputFile) throws IOException{
+        try {
+            fw = new FileWriter(filename + ".txt", true);
+            bw = new BufferedWriter(fw);
+            pw = new PrintWriter(bw);
+            pw.println(countTrue(classification));
+            for (int i = 0; i < classification.length; i ++){
+                for (int j = 0; j < classification[i].length; j ++){
+                    if (classification[i][j]){
+                        pw.println(i + " " + j);
+                    }
+                }
+            }
+            pw.flush();
+        } finally {
+            try {
+                pw.close();
+                bw.close();
+                fw.close();
+            } catch (IOException io) {}
+        }
+    }
+    public static int lineCounter(String inputFile) throws IOException{
             File file = new File(inputFile);
             Scanner scan = new Scanner(file);
             int count = 0;
