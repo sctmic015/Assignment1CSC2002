@@ -40,7 +40,7 @@ public class Terrain {
         this.mountainArray = array;
     }
 
-   public boolean isBasin(int rowNum, int columnNum){
+    public boolean isBasin(int rowNum, int columnNum){
         if (rowNum == 0 && columnNum == 0){    // Top left
             //if (mountainArray[0][1] - mountainArray[0][0] >= 0.01 && mountainArray[1][1] - mountainArray[0][0] >= 0.01 &&
               //      mountainArray[1][0] - mountainArray[0][0] >= 0.01)
@@ -92,7 +92,6 @@ public class Terrain {
         }
         return false;
     }
-
     public int getRows(){
         return this.rows;
     }
