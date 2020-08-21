@@ -6,8 +6,9 @@ import java.io.*;
 public class SequentialVersionTest {
     public static void main (String[] args) throws Exception {
         //File file = new File(args[0] + ".txt");
-        Scanner systemScan = new Scanner(System.in);
-        String scanIn = systemScan.next();
+        //Scanner systemScan = new Scanner(System.in);
+        //String scanIn = systemScan.next();
+        String scanIn = args[0] + ".txt";
         String fileName = "/home/michael/Documents/" + scanIn;
         File file = new File(fileName);
         Scanner fileScan = new Scanner(file);
@@ -22,10 +23,10 @@ public class SequentialVersionTest {
                 }
             }
             double time2 = System.currentTimeMillis() - time1;
-            writeOperationsToCSV("trial1" , time2, scanIn + "Run");
+            writeOperationsToCSV("trial" + Integer.toString(b) , time2, scanIn + "Run");
 
         }
-        writeOutputToTxt(classification, Test, "large_out_2.txt");
+        writeOutputToTxt(classification, Test, "large_out_2");
     }
     public static float[][] readArray(File file) throws FileNotFoundException {
         Scanner scan = new Scanner(file);
